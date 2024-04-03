@@ -14,7 +14,7 @@ namespace PassIn.Application.UseCases.Events.RegisterAttendee
             _dbContext = new PassInDbContext();
         }
 
-        public ResponseRegisterJson Execute(Guid eventId, RequestRegisterEventJson request)
+        public ResponseRegisteredJson Execute(Guid eventId, RequestRegisterEventJson request)
         {
             var dbContext = new PassInDbContext();
 
@@ -31,7 +31,7 @@ namespace PassIn.Application.UseCases.Events.RegisterAttendee
             _dbContext.Attendees.Add(entity);
             _dbContext.SaveChanges();
 
-            return new ResponseRegisterJson
+            return new ResponseRegisteredJson
             {
                 Id = entity.Id
             };
@@ -59,7 +59,7 @@ namespace PassIn.Application.UseCases.Events.RegisterAttendee
 
             var attendeeForEvent = _dbContext.Attendees.Count(attendee => attendee.Event_Id == eventId);
 
-            if (attendeeForEvent > eventEntity.Maximum_Attendees)
+            if (attendeeForEvent == eventEntity.Maximum_Attendees)
                 throw new ErrorOnValidationException("There is no room for this event");
         }
 
